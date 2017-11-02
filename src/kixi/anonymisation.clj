@@ -3,7 +3,7 @@
    [clojure-stemmer.porter.stemmer :as stemmer]
    [pandect.algo.sha3-256 :as sha3]))
 
-(defn- ts [] (quot (System/currentTimeMillis) 1000))
+(defn ts [] (quot (System/currentTimeMillis) 1000))
 
 (defn- words->line [words]
   (str (clojure.string/join " " words) "\n") )

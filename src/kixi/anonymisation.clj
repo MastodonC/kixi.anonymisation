@@ -30,7 +30,8 @@
 (defn anonymise-chunk [chunk]
   (let [lookup {}
         lines (clojure.string/split chunk #"\n+")]
-    (map (partial line->anon-line lookup) lines)))
+    (clojure.string/join "\n"
+                         (map (partial line->anon-line lookup) lines))))
 
 (defn anonymise-file [in-file out-file]
   (let [lookup {}]

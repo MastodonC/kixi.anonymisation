@@ -5,10 +5,13 @@
 
 (defn ts [] (quot (System/currentTimeMillis) 1000))
 
+(defn chunk->lines [chunk]
+  (clojure.string/split chunk #"\n+"))
+
 (defn- words->line [words]
   (str (clojure.string/join " " words) "\n") )
 
-(defn- line->words [line]
+(defn line->words [line]
   (let [words (clojure.string/split line #"\s+")]
     (remove clojure.string/blank? words)))
 
@@ -18,8 +21,10 @@
       sha3/sha3-256))
 
 (defn- anon-word [lookup word]
-  (let [root-word (stemmer/stemming word)]
-    (get lookup root-word (word->hash root-word))))
+  (let [root-word  (stemmer/stemming word)
+        hashed-word (get @lookup root-word (word->hash root-word))]
+    (swap! lookup assoc root-word hashed-word)
+    hashed-word))
 
 (defn- line->anon-line [lookup line]
   (->> line
@@ -28,13 +33,13 @@
        words->line))
 
 (defn anonymise-chunk [chunk]
-  (let [lookup {}
-        lines (clojure.string/split chunk #"\n+")]
-    (clojure.string/join "\n"
-                         (map (partial line->anon-line lookup) lines))))
+  (let [lookup (atom {})
+        lines (chunk->lines chunk)
+        anon-chunk (map (partial line->anon-line lookup) lines)]
+    (clojure.string/join "\n" anon-chunk)))
 
 (defn anonymise-file [in-file out-file]
-  (let [lookup {}]
+  (let [lookup (atom {})]
     (with-open [reader (clojure.java.io/reader in-file)]
       (with-open [writer (clojure.java.io/writer out-file)]
         (doseq [line (line-seq reader)]

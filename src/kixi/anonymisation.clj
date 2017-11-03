@@ -1,12 +1,12 @@
 (ns kixi.anonymisation
   (require
-   [clojure-stemmer.porter.stemmer :as stemmer]
+   [kixi.stemmer :as stemmer]
    [pandect.algo.sha3-256 :as sha3]))
 
 (defn ts [] (quot (System/currentTimeMillis) 1000))
 
 (defn- chunk->lines [chunk]
-  (clojure.string/split chunk #"\n+"))
+  (clojure.string/split-lines chunk))
 
 (defn- lines->chunk [chunk]
   (clojure.string/join "\n" chunk))
@@ -22,6 +22,9 @@
   (-> word
       (str ts)
       sha3/sha3-256))
+
+(defn line->tokens [line]
+  (clojure.string/split line #"\s"))
 
 (defn- anon-word [lookup word]
   (let [root-word  (stemmer/stemming word)

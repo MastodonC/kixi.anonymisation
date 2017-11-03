@@ -9,7 +9,7 @@
   (clojure.string/split chunk #"\n+"))
 
 (defn- lines->chunk [chunk]
-  (clojure.string/split chunk #"\n+"))
+  (clojure.string/join "\n" chunk))
 
 (defn- words->line [words]
   (str (clojure.string/join " " words) "\n") )

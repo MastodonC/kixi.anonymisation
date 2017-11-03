@@ -6,13 +6,13 @@
 
 (defn ts [] (quot (System/currentTimeMillis) 1000))
 
-(defn- chunk->lines [chunk]
+(defn chunk->lines [chunk]
   (clojure.string/split-lines chunk))
 
-(defn- lines->chunk [chunk]
+(defn lines->chunk [chunk]
   (clojure.string/join "\n" chunk))
 
-(defn- words->line [words]
+(defn words->line [words]
   (str (clojure.string/join " " words) "\n") )
 
 (defn line->words [line]
@@ -42,8 +42,10 @@
 (defn anonymise-chunk [chunk]
   (let [lookup (atom {})
         lines (chunk->lines chunk)
-        anon-chunk (map (partial line->anon-line lookup) lines)]
-    (lines->chunk anon-chunk)))
+        anon-lines (map (partial line->anon-line lookup) lines)
+        anon-chunk (lines->chunk anon-lines)]
+    {:lookup @lookup
+     :content anon-chunk}))
 
 (defn anonymise-file [in-file out-file]
   (let [lookup (atom {})]

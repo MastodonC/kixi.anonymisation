@@ -25,7 +25,7 @@
       sha3/sha3-256))
 
 (defn line->tokens [line]
-  (clojure.string/split line #"\s"))
+  (clojure.string/split line #"\s+"))
 
 (defn- anon-word [lookup word]
   (let [root-word  (stemmer/stemming word)

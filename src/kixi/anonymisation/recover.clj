@@ -1,5 +1,5 @@
-(ns kixi.recover
-  (require [kixi.anonymisation :as anon]))
+(ns kixi.anonymisation.recover
+  (require [kixi.anonymisation.hide :as hide]))
 
 
 (defn word->recovered-word [lookup word]
@@ -7,14 +7,14 @@
 
 (defn line->recovered-line [lookup line]
   (->> line
-      (anon/line->words)
+      (hide/line->words)
       (map (partial word->recovered-word lookup))
-      (anon/words->line)))
+      (hide/words->line)))
 
 (defn from-chunk  [lookup txt]
   (->> txt
-      anon/chunk->lines
+      hide/chunk->lines
       (map (partial line->recovered-line lookup))
-      (anon/lines->chunk)))
+      (hide/lines->chunk)))
 
 (defn from-file   [lookup-file file])

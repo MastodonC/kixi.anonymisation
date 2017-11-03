@@ -1,7 +1,7 @@
-(ns kixi.anonymisation
+(ns kixi.anonymisation.hide
   (require
-   [kixi.stemmer :as stemmer]
-   [kixi.tokeniser :as tokeniser]
+   [kixi.anonymisation.stemmer :as stemmer]
+   [kixi.anonymisation.tokeniser :as tokeniser]
    [pandect.algo.sha3-256 :as sha3]))
 
 (defn ts [] (quot (System/currentTimeMillis) 1000))

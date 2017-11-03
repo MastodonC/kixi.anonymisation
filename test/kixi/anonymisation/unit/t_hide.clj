@@ -1,6 +1,6 @@
-(ns kixi.unit.t-anonoymisation
+(ns kixi.anonymisation.unit.t-hide
   (:require [midje.sweet :refer :all]
-            [kixi.anonymisation :refer :all]))
+            [kixi.anonymisation.hide :refer :all]))
 
 (fact "it should convert each word to a hash"
   (let [hashed (:content (anonymise-chunk "Curiouser and curiouser!"))

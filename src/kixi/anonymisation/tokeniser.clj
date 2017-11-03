@@ -1,4 +1,4 @@
-(ns kixi.tokeniser
+(ns kixi.anonymisation.tokeniser
   (:import [org.apache.lucene.analysis.standard StandardTokenizer StandardAnalyzer])
   (:import [org.apache.lucene.analysis.snowball SnowballFilter])
   (:import [org.apache.lucene.analysis.tokenattributes CharTermAttribute])

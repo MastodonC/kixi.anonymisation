@@ -1,4 +1,4 @@
-(ns kixi.stemmer
+(ns kixi.anonymisation.stemmer
   (import [org.tartarus.snowball.ext englishStemmer]))
 
 (def stemmer (englishStemmer.))

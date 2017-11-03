@@ -1,15 +1,11 @@
 (ns kixi.tokeniser
   (:import [org.apache.lucene.analysis.standard StandardTokenizer StandardAnalyzer])
-  (:import [org.tartarus.snowball.ext englishStemmer])
   (:import [org.apache.lucene.analysis.snowball SnowballFilter])
-  (:import [org.tartarus.snowball.ext EnglishStemmer])
+  (:import [org.apache.lucene.analysis.tokenattributes CharTermAttribute])
+  (:import [org.tartarus.snowball.ext englishStemmer])
   (:import [java.io StringReader]))
 
 (defonce standard-tokenizer (StandardTokenizer.))
-
-(defn stemmed
-  [tk]
-  (SnowballFilter. tk (englishStemmer.)))
 
 (defn token-stream [str]
   (doto standard-tokenizer
@@ -32,4 +28,4 @@
         (.close tk)
         collected))))
 
-(defn tokenize [words] (tokens (token-stream words)))
+(defn line->tokens [words] (tokens (token-stream words)))

@@ -1,6 +1,7 @@
 (ns kixi.anonymisation
   (require
    [kixi.stemmer :as stemmer]
+   [kixi.tokeniser :as tokeniser]
    [pandect.algo.sha3-256 :as sha3]))
 
 (defn ts [] (quot (System/currentTimeMillis) 1000))
@@ -34,7 +35,7 @@
 
 (defn- line->anon-line [lookup line]
   (->> line
-       line->words
+       line->tokens
        (map (partial anon-word lookup))
        words->line))
 

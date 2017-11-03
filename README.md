@@ -1,6 +1,6 @@
 # kixi.anonymisation
 
-[![Build Status](https://travis-ci.org/mastodonc/kixi.anonymisation.png?branch=master)](https://travis-ci.org/mastodonc/kixi.anonymisation)
+[![Build Status](https://travis-ci.org/MastodonC/kixi.anonymisation.svg?branch=master)](https://travis-ci.org/MastodonC/kixi.anonymisation)
 
 ## License
 

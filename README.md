@@ -3,7 +3,7 @@
 Anonymisation and recovery of text content.
 
 Converts words into hashes and through a lookup partial recovery of stemmed content is possible.
-Removing words from the lookup allows removing some words from ever being recovered.
+Removing words from the lookup means some words will never be recovered from their hash. 
 
 [![Build Status](https://travis-ci.org/MastodonC/kixi.anonymisation.svg?branch=master)](https://travis-ci.org/MastodonC/kixi.anonymisation)
 

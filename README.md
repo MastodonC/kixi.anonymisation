@@ -8,7 +8,7 @@ Anonymisation and recovery of text content.
 
 ### Hiding
 
-```
+```clojure
 (require ['kixi.anonymisation.hide' :as hide])
 
 (hide/anonymise-chunk "Sometimes I believe in as many as six impossible things before breakfast.")
@@ -33,7 +33,7 @@ Anonymisation and recovery of text content.
 
 ### Recovering
 
-```
+```clojure
 (require ['kixi.anonymisation.recover' :as recover])
 
 (recover/from-chunk lookup content)

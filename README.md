@@ -12,7 +12,7 @@ Removing words from the lookup means some words will never be recovered from the
 ### Hiding
 
 ```clojure
-(require ['kixi.anonymisation.hide' :as hide])
+(require '[kixi.anonymisation.hide :as hide])
 
 (hide/anonymise-chunk "Sometimes I believe in as many as six impossible things before breakfast.")
 ;;=>
@@ -34,7 +34,7 @@ Removing words from the lookup means some words will never be recovered from the
 ### Recovering
 
 ```clojure
-(require ['kixi.anonymisation.recover' :as recover])
+(require '[kixi.anonymisation.recover :as recover])
 
 ;;Assuming lookup and content from hiding example:
 (recover/from-chunk lookup content)

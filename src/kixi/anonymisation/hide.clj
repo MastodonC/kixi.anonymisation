@@ -2,30 +2,15 @@
   (require
    [kixi.anonymisation.stemmer :as stemmer]
    [kixi.anonymisation.tokeniser :as tokeniser]
+   [kixi.anonymisation.parser :as parser]
    [pandect.algo.sha3-256 :as sha3]))
 
 (defn ts [] (quot (System/currentTimeMillis) 1000))
-
-(defn chunk->lines [chunk]
-  (clojure.string/split-lines chunk))
-
-(defn lines->chunk [chunk]
-  (clojure.string/join "\n" chunk))
-
-(defn words->line [words]
-  (str (clojure.string/join " " words) "\n") )
-
-(defn line->words [line]
-  (let [words (clojure.string/split line #"\s+")]
-    (remove clojure.string/blank? words)))
 
 (defn- word->hash [word]
   (-> word
       (str ts)
       sha3/sha3-256))
-
-(defn line->tokens [line]
-  (clojure.string/split line #"\s+"))
 
 (defn- anon-word [lookup word]
   (let [root-word  (stemmer/stemming word)
@@ -35,15 +20,15 @@
 
 (defn- line->anon-line [lookup line]
   (->> line
-       line->tokens
+       tokeniser/line->tokens
        (map (partial anon-word lookup))
-       words->line))
+       parser/words->sentence))
 
 (defn anonymise-chunk [chunk]
   (let [lookup (atom {})
-        lines (chunk->lines chunk)
+        lines (parser/chunk->sentences chunk)
         anon-lines (map (partial line->anon-line lookup) lines)
-        anon-chunk (lines->chunk anon-lines)]
+        anon-chunk (parser/sentences->chunk anon-lines)]
     {:lookup @lookup
      :content anon-chunk}))
 

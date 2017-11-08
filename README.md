@@ -4,8 +4,7 @@
 
 Anonymisation and recovery of text content.
 
-Converts words into hashes and through a lookup partial recovery of stemmed content is possible.
-Removing words from the lookup means some words will never be recovered from their hash. 
+Converts words into hashes while preserving sentence structure (which might be useful for further text processing). Supports recovery of hashed content through a lookup, though the recovered content will be stemmed. Removing words from the lookup means some words will never be recovered from their hash. 
 
 ## Usage
 

@@ -37,4 +37,5 @@
     (with-open [reader (clojure.java.io/reader in-file)]
       (with-open [writer (clojure.java.io/writer out-file)]
         (doseq [line (line-seq reader)]
-          (.write writer (line->anon-line lookup line)))))))
+          (.write writer (line->anon-line lookup line)))))
+    (spit "lookup.edn" (prn-str lookup))))

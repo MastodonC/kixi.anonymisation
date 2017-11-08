@@ -17,4 +17,10 @@
          (map (partial line->recovered-line reverse-lookup))
          (parser/sentences->chunk))))
 
-(defn from-file [lookup-file file])
+(defn from-file [lookup-file file]
+  (let [lookup (-> lookup-file
+                   slurp
+                   clojure.edn/read-string)
+        chunk (slurp file)
+        recovered-chunk (from-chunk lookup chunk)]
+    (spit (str file ".recovered") recovered-chunk)))

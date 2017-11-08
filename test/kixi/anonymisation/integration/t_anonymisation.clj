@@ -4,15 +4,15 @@
             [kixi.anonymisation.recover :as recover]
             [kixi.anonymisation.hide :as hide]))
 
-(fact "it should recover anonymised content from the lookup"
-  (let [txt "six imposs thing befor breakfast."
-        {lookup :lookup content :content} (hide/anonymise-chunk txt)]
+(def txt          "six impossible things before breakfast.")
+(def stemmed-text "six imposs thing befor breakfast.")
 
-    (recover/from-chunk lookup content) => txt))
+(fact "it should recover anonymised content from the lookup"
+  (let [{lookup :lookup content :content} (hide/anonymise-chunk txt)]
+    (recover/from-chunk lookup content) => stemmed-text))
 
 (fact "it should leave words not in the lookup as hashed"
-  (let [txt "six imposs thing befor breakfast."
-        {lookup :lookup content :content} (hide/anonymise-chunk txt)
+  (let [{lookup :lookup content :content} (hide/anonymise-chunk txt)
         incomplete-lookup (dissoc lookup "six" )]
 
     (-> (recover/from-chunk incomplete-lookup content)

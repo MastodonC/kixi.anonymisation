@@ -13,7 +13,7 @@ Converts words into hashes while preserving sentence structure (which might be u
 ```clojure
 (require '[kixi.anonymisation.hide :as hide])
 
-(hide/anonymise-chunk "Sometimes I believe in as many as six impossible things before breakfast.")
+(hide/from-chunk "Sometimes I believe in as many as six impossible things before breakfast.")
 ;;=>
 ;; {:lookup {thing     d108c3ee3dcb2d15f774d1d1b93f77b8dd4aee21e45261ea0f47fdaaee645ee4,
 ;;           six       8c494b0091d355d522ecf3bc618e6f462007e53312fe0b9ff22c2535c83486cd,

@@ -8,11 +8,11 @@
 (def stemmed-text "six imposs thing befor breakfast.")
 
 (fact "it should recover anonymised content from the lookup"
-  (let [{lookup :lookup content :content} (hide/anonymise-chunk txt)]
+  (let [{lookup :lookup content :content} (hide/from-chunk txt)]
     (recover/from-chunk lookup content) => stemmed-text))
 
 (fact "it should leave words not in the lookup as hashed"
-  (let [{lookup :lookup content :content} (hide/anonymise-chunk txt)
+  (let [{lookup :lookup content :content} (hide/from-chunk txt)
         incomplete-lookup (dissoc lookup "six" )]
 
     (-> (recover/from-chunk incomplete-lookup content)

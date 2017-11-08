@@ -24,7 +24,7 @@
        (map (partial anon-word lookup))
        parser/words->sentence))
 
-(defn anonymise-chunk [chunk]
+(defn from-chunk [chunk]
   (let [lookup (atom {})
         lines (parser/chunk->sentences chunk)
         anon-lines (map (partial line->anon-line lookup) lines)
@@ -32,7 +32,7 @@
     {:lookup @lookup
      :content anon-chunk}))
 
-(defn anonymise-file [in-file out-file]
+(defn from-file [in-file out-file]
   (let [lookup (atom {})]
     (with-open [reader (clojure.java.io/reader in-file)]
       (with-open [writer (clojure.java.io/writer out-file)]

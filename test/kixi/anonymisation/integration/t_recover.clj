@@ -1,4 +1,4 @@
-(ns kixi.anonymisation.unit.t-recover
+(ns kixi.anonymisation.integration.t-recover
   (:require [midje.sweet :refer :all]
             [kixi.anonymisation.parser :as parser]
             [kixi.anonymisation.recover :as recover]

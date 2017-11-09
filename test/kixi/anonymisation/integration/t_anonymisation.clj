@@ -25,8 +25,9 @@
 (facts "with files"
   (fact "it should hide and recover all content from a master lookup"
     (spit "test/fixtures/in.txt" txt)
+    (spit "test/fixtures/whitelist.txt" "six\n impossible\n things")
 
-    (hide/from-file "test/fixtures/in.txt" "test/fixtures/out.txt")
+    (hide/from-file "test/fixtures/in.txt" "test/fixtures/out.txt" "test/fixtures/whitelist.txt")
 
     (let [recovered (recover/from-file "test/fixtures/lookup.edn" "test/fixtures/out.txt")]
       (slurp "test/fixtures/out.txt.recovered") => "six imposs thing befor breakfast."))

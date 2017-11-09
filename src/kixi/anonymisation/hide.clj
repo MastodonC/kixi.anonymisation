@@ -33,28 +33,29 @@
     {:lookup @lookup
      :content anon-chunk}))
 
-(defn- anonomise-file
-  ([in-file out-file] (anonomise-file in-file out-file {}))
-  ([in-file out-file lookup-dict]
-   (let [lookup (atom lookup-dict)]
-     (with-open [reader (clojure.java.io/reader in-file)]
-       (with-open [writer (clojure.java.io/writer out-file)]
-         (doseq [line (line-seq reader)]
-           (.write writer (sentence->anon-sentence lookup line)))))
-     @lookup)))
+(defn- anonomise-file [in-file out-file lookup-dict]
+  (let [lookup (atom lookup-dict)]
+    (with-open [reader (clojure.java.io/reader in-file)]
+      (with-open [writer (clojure.java.io/writer out-file)]
+        (doseq [line (line-seq reader)]
+          (.write writer (sentence->anon-sentence lookup line)))))
+    @lookup))
 
 (defn- path [file] (.getParent (clojure.java.io/file file)))
 
 (defn from-file
-  ([in-file out-file]
-   (let [lookup (anonomise-file in-file out-file)
-         out-dir (path out-file)]
-     (spit (str out-dir "/lookup.edn") (prn-str lookup))))
   ([in-file out-file whitelist-file]
-   (let [lookup             (anonomise-file in-file out-file)
+   (let [lookup (anonomise-file in-file out-file {})
          lookup-whitelisted (whitelist/from-file lookup whitelist-file)
          out-dir (path out-file)]
-     (spit (str out-dir "/lookup.edn")              (prn-str lookup))
+     (spit (str out-dir "/lookup.edn") (prn-str lookup))
+     (spit (str out-dir "/lookup.edn.whitelisted") (prn-str lookup-whitelisted))))
+  ([in-file out-file whitelist-file lookup-file]
+   (let [lookup (-> lookup-file slurp clojure.edn/read-string)
+         new-lookup         (anonomise-file in-file out-file lookup)
+         lookup-whitelisted (whitelist/from-file new-lookup whitelist-file)
+         out-dir (path out-file)]
+     (spit (str out-dir "/lookup.edn")              (prn-str new-lookup))
      (spit (str out-dir "/lookup.edn.whitelisted") (prn-str lookup-whitelisted)))))
 
 (defn from-files [in-dir out-dir whitelist-file]

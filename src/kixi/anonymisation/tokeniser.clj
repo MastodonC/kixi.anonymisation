@@ -29,3 +29,5 @@
         collected))))
 
 (defn line->tokens [words] (tokens (token-stream words)))
+
+(defn word->token [word] (first (tokens (token-stream word))))

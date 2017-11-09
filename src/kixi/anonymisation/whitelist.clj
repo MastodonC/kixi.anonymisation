@@ -14,9 +14,4 @@
                         (map scrub))]
     (select-keys lookup whitelist)))
 
-(defn from-file [lookup-file whitelist-file]
-  (let [lookup (-> lookup-file slurp clojure.edn/read-string)
-        whitelist (slurp whitelist-file)
-        whitelist-lookup  (filter-lookup lookup whitelist)]
-    (spit (str lookup-file ".whitelisted") (prn-str whitelist-lookup))
-    whitelist-lookup))
+(defn from-file [lookup whitelist-file] (->> whitelist-file slurp (filter-lookup lookup)))

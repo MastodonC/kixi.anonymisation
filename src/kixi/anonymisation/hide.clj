@@ -43,7 +43,7 @@
            (.write writer (sentence->anon-sentence lookup line)))))
      @lookup)))
 
-(defn- path [file] (.getParent (clojure.java.io/file out-file)))
+(defn- path [file] (.getParent (clojure.java.io/file file)))
 
 (defn from-file
   ([in-file out-file]

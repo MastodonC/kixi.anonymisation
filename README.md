@@ -35,13 +35,19 @@ Converts words into hashes while preserving sentence structure (which might be u
 #### Working with files:
 
 ```clojure
-(hide/from-file "in-directory/input.txt" "out-directory/out.txt")
-;;lookup.edn is written to disk in `out-directory`
-
 (hide/from-file "in-directory/input.txt" "out-directory/out.txt" "whitelist.txt")
 ;;lookup.edn is written to disk in `out-directory`
 ;;lookup.edn.whitelisted is written to disk in `out-directory`
 ```
+
+whitelist.txt is a list of words delimited by newlines.
+
+```
+impossible
+breakfast
+six
+```
+
 
 ### Recovering
 

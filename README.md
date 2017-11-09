@@ -54,6 +54,13 @@ Converts words into hashes while preserving sentence structure (which might be u
 ;; "sometim i believ in as mani as six imposs thing befor breakfast."
 ```
 
+##### Working with files:
+
+```clojure
+(recover/from-file "dir/lookup.edn" "dir/out.txt")
+;;dir/out.txt.recovered is written to disk with recovered text.
+```
+
 ## License
 
 Copyright © 2017 MastodonC

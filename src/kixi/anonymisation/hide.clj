@@ -49,4 +49,4 @@
    (let [lookup             (anonomise-file in-file out-file)
          lookup-whitelisted (whitelist/from-file lookup whitelist-file)]
      (spit "lookup.edn"              (prn-str lookup))
-     (spit "lookup.edn.whitelisted") (prn-str lookup-whitelisted))))
+     (spit "lookup.edn.whitelisted" (prn-str lookup-whitelisted)))))

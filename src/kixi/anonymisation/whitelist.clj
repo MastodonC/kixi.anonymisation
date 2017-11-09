@@ -14,4 +14,7 @@
                         (map scrub))]
     (select-keys lookup whitelist)))
 
-(defn from-file [lookup whitelist-file] (->> whitelist-file slurp (filter-lookup lookup)))
+(defn from-file [lookup whitelist-file]
+  (->> whitelist-file
+       slurp
+       (filter-lookup lookup)))

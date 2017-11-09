@@ -7,15 +7,43 @@
 (def txt          "six impossible things before breakfast.")
 (def stemmed-text "six imposs thing befor breakfast.")
 
-(fact "it should recover anonymised content from the lookup"
-  (let [{lookup :lookup content :content} (hide/from-chunk txt)]
-    (recover/from-chunk lookup content) => stemmed-text))
+(facts "with strings"
+  (fact "it should recover anonymised content from the lookup"
+    (let [{lookup :lookup content :content} (hide/from-chunk txt)]
+      (recover/from-chunk lookup content) => stemmed-text))
 
-(fact "it should leave words not in the lookup as hashed"
-  (let [{lookup :lookup content :content} (hide/from-chunk txt)
-        incomplete-lookup (dissoc lookup "six" )]
+  (fact "it should leave words not in the lookup as hashed"
+    (let [{lookup :lookup content :content} (hide/from-chunk txt)
+          incomplete-lookup (dissoc lookup "six" )]
 
-    (-> (recover/from-chunk incomplete-lookup content)
-        parser/sentence->words
-        first
-        ) =not=> "six"))
+      (-> (recover/from-chunk incomplete-lookup content)
+          parser/sentence->words
+          first
+          ) =not=> "six"))
+  )
+
+(facts "with files"
+  (fact "it should hide and recover all content from a master lookup"
+    (spit "test/fixtures/in.txt" txt)
+
+    (hide/from-file "test/fixtures/in.txt" "test/fixtures/out.txt")
+
+    (let [recovered (recover/from-file "lookup.edn" "test/fixtures/out.txt")]
+      (slurp "test/fixtures/out.txt.recovered") => "six imposs thing befor breakfast."))
+
+  (fact "it should hide and recover parital content from whitelisted lookup"
+    (spit "test/fixtures/in.txt"         txt)
+    (spit "test/fixtures/whitelist.txt" "six\n impossible\n things")
+
+    (hide/from-file "test/fixtures/in.txt" "test/fixtures/out.txt" "test/fixtures/whitelist.txt")
+
+    (let [recovered-whitelisted (recover/from-file "lookup.edn.whitelisted" "test/fixtures/out.txt")
+          partial-content (slurp "test/fixtures/out.txt.recovered")]
+
+      partial-content => (contains "six")
+      partial-content => (contains "imposs")
+      partial-content => (contains "thing")
+
+      partial-content =not=> (contains "befor")
+      partial-content =not=> (contains "breakfast")))
+  )

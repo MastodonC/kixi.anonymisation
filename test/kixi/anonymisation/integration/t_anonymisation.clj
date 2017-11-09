@@ -28,7 +28,7 @@
 
     (hide/from-file "test/fixtures/in.txt" "test/fixtures/out.txt")
 
-    (let [recovered (recover/from-file "lookup.edn" "test/fixtures/out.txt")]
+    (let [recovered (recover/from-file "test/fixtures/lookup.edn" "test/fixtures/out.txt")]
       (slurp "test/fixtures/out.txt.recovered") => "six imposs thing befor breakfast."))
 
   (fact "it should hide and recover parital content from whitelisted lookup"
@@ -37,7 +37,7 @@
 
     (hide/from-file "test/fixtures/in.txt" "test/fixtures/out.txt" "test/fixtures/whitelist.txt")
 
-    (let [recovered-whitelisted (recover/from-file "lookup.edn.whitelisted" "test/fixtures/out.txt")
+    (let [recovered-whitelisted (recover/from-file "test/fixtures/lookup.edn.whitelisted" "test/fixtures/out.txt")
           partial-content (slurp "test/fixtures/out.txt.recovered")]
 
       partial-content => (contains "six")

@@ -43,15 +43,19 @@
            (.write writer (sentence->anon-sentence lookup line)))))
      @lookup)))
 
+(defn- path [file] (.getParent (clojure.java.io/file out-file)))
+
 (defn from-file
   ([in-file out-file]
-   (let [lookup (anonomise-file in-file out-file)]
-     (spit "lookup.edn" (prn-str lookup))))
+   (let [lookup (anonomise-file in-file out-file)
+         out-dir (path out-file)]
+     (spit (str out-dir "/lookup.edn") (prn-str lookup))))
   ([in-file out-file whitelist-file]
    (let [lookup             (anonomise-file in-file out-file)
-         lookup-whitelisted (whitelist/from-file lookup whitelist-file)]
-     (spit "lookup.edn"              (prn-str lookup))
-     (spit "lookup.edn.whitelisted" (prn-str lookup-whitelisted)))))
+         lookup-whitelisted (whitelist/from-file lookup whitelist-file)
+         out-dir (path out-file)]
+     (spit (str out-dir "/lookup.edn")              (prn-str lookup))
+     (spit (str out-dir "/lookup.edn.whitelisted") (prn-str lookup-whitelisted)))))
 
 (defn from-files [in-dir out-dir whitelist-file]
   (let [lookup (->> (file-seq (clojure.java.io/file in-dir))

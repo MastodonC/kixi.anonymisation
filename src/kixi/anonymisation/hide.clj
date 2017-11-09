@@ -43,7 +43,7 @@
 
 (defn from-file
   ([in-file out-file]
-   (let [lookup             (anonomise-file in-file out-file)]
+   (let [lookup (anonomise-file in-file out-file)]
      (spit "lookup.edn" (prn-str lookup))))
   ([in-file out-file whitelist-file]
    (let [lookup             (anonomise-file in-file out-file)

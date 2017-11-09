@@ -15,7 +15,7 @@
     (select-keys lookup whitelist)))
 
 (defn from-file [lookup whitelist-file]
-  (let [whitelist  (slurp whitelist-file)]
+  (let [whitelist (slurp whitelist-file)]
     (if (seq whitelist)
-      (filter-lookup lookup)
+      (filter-lookup lookup whitelist)
       lookup)))

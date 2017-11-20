@@ -8,7 +8,7 @@
 
 (defn ts [] (quot (System/currentTimeMillis) 1000))
 
-(defn empty-lookup-resource [] (clojure.java.io/input-stream (.getBytes "{}")))
+(def empty-lookup-resource (.getBytes "{}"))
 
 (defn- word->hash [word]
   (-> word
@@ -49,7 +49,7 @@
 
 (defn from-file
   ([in-file out-file whitelist-file]
-   (from-file in-file out-file whitelist-file (empty-lookup-resource)))
+   (from-file in-file out-file whitelist-file empty-lookup-resource))
   ([in-file out-file whitelist-file lookup-file]
    (let [old-lookup (whitelist/file->map lookup-file)
          lookup (anonomise-file in-file out-file old-lookup)
@@ -60,7 +60,7 @@
 
 (defn from-files
   ([in-dir out-dir whitelist-file]
-   (from-files in-dir out-dir whitelist-file (empty-lookup-resource)))
+   (from-files in-dir out-dir whitelist-file empty-lookup-resource))
   ([in-dir out-dir whitelist-file lookup-file]
    (let [old-lookup (whitelist/file->map lookup-file)
          new-lookup (->> (file-seq (clojure.java.io/file in-dir))

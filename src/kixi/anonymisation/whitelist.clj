@@ -19,3 +19,8 @@
     (if (seq whitelist)
       (filter-lookup lookup whitelist)
       lookup)))
+
+(defn file->map [file]
+  (-> file
+      slurp
+      clojure.edn/read-string))

@@ -1,14 +1,16 @@
 (ns kixi.anonymisation.recover
-  (require [kixi.anonymisation.parser :as parser]))
+  (require [kixi.anonymisation.parser :as parser]
+           [kixi.anonymisation.tokeniser :as tokeniser])
+  (:require [kixi.anonymisation.hide :as hide]))
 
 (defn word->recovered-word [lookup word]
   (get lookup word word))
 
 (defn line->recovered-line [lookup line]
   (->> line
-      (parser/sentence->words)
-      (map (partial word->recovered-word lookup))
-      (parser/words->sentence)))
+       tokeniser/txt->tokens
+       (map (partial word->recovered-word lookup))
+       parser/words->sentence))
 
 (defn from-chunk  [lookup txt]
   (let [reverse-lookup (clojure.set/map-invert lookup)]

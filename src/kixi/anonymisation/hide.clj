@@ -14,24 +14,26 @@
       sha3/sha3-256))
 
 (defn- anon-word [lookup word]
-  (let [root-word  (stemmer/stemming word)
-        hashed-word (get @lookup root-word (word->hash root-word))]
-    (swap! lookup assoc root-word hashed-word)
-    hashed-word))
+  (if (parser/ignore? word)
+    word
+    (let [root-word  (stemmer/stemming word)
+          hashed-word (get @lookup root-word (word->hash root-word))]
+      (swap! lookup assoc root-word hashed-word)
+      hashed-word)))
 
 (defn- sentence->anon-sentence [lookup line]
   (->> line
-       tokeniser/line->tokens
+       tokeniser/txt->tokens
        (map (partial anon-word lookup))
        parser/words->sentence))
 
 (defn from-chunk [chunk]
   (let [lookup (atom {})
-        sentences (parser/chunk->sentences chunk)
-        anon-sentences (map (partial sentence->anon-sentence lookup) sentences)
+        anon-sentences (->> chunk
+                            parser/chunk->sentences
+                            (map (partial sentence->anon-sentence lookup)))
         anon-chunk (parser/sentences->chunk anon-sentences)]
-    {:lookup @lookup
-     :content anon-chunk}))
+    {:lookup @lookup :content anon-chunk}))
 
 (defn- anonomise-file [in-file out-file lookup-dict]
   (let [lookup (atom lookup-dict)]

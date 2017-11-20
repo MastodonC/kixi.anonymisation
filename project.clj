@@ -5,12 +5,12 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
 
+                 [cc.mallet/mallet "2.0.8"]
+                 [clojure-opennlp "0.4.0"]
+                 [com.github.rholder/snowball-stemmer "1.3.0.581.1"]
                  [org.bouncycastle/bcprov-jdk15on "1.58"]
                  [pandect "0.6.1"]
-                 [com.github.rholder/snowball-stemmer "1.3.0.581.1"]
-                 [org.apache.lucene/lucene-core "7.1.0"]
-                 [org.apache.lucene/lucene-analyzers-common "7.1.0"]
-                 [cc.mallet/mallet "2.0.8"]]
+                 ]
 
   :profiles {:dev {:dependencies [[midje "1.8.3"]]
                    :plugins      [[lein-kibit "0.1.5"]

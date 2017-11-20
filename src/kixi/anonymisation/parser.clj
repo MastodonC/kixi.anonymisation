@@ -1,17 +1,25 @@
-(ns kixi.anonymisation.parser)
+(ns kixi.anonymisation.parser
+  (:require
+   [opennlp.nlp :as nlp]))
 
-(defn chunk->sentences [chunk]
-  (clojure.string/split chunk #"\.(\s|\n|$)+"))
+(defonce txt->sentences (nlp/make-sentence-detector "resources/models/en-sent.bin"))
+
+(def ignore-words ["?" "!" "."])
+(defn ignore? [w] (some #{w} ignore-words))
+
+(defn chunk->sentences [chunk] (txt->sentences chunk))
 
 (defn sentences->chunk [lines]
   (->> lines
-       (reduce (fn [chunk line] (concat chunk (str line ". "))) "" )
        clojure.string/join
        clojure.string/trim))
 
 (defn words->sentence [words]
-  (clojure.string/join " " words))
+  (reduce (fn [sentence word]
+            (if (ignore? word)
+              (str sentence word)
+              (str sentence " " word)))
+          ""
+          words))
 
-(defn sentence->words [line]
-  (let [words (clojure.string/split line #"\s+")]
-    (remove clojure.string/blank? words)))
+(defn sentence->words [sentence] (clojure.string/split sentence #"\s+"))

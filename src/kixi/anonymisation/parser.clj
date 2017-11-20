@@ -21,5 +21,3 @@
               (str sentence " " word)))
           ""
           words))
-
-(defn sentence->words [sentence] (clojure.string/split sentence #"\s+"))

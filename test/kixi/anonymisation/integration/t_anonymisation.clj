@@ -1,6 +1,5 @@
 (ns kixi.anonymisation.integration.t-anonymisation
   (:require [midje.sweet :refer :all]
-            [kixi.anonymisation.parser :as parser]
             [kixi.anonymisation.recover :as recover]
             [kixi.anonymisation.hide :as hide]))
 
@@ -17,7 +16,7 @@
           incomplete-lookup (dissoc lookup "six" )]
 
       (-> (recover/from-chunk incomplete-lookup content)
-          parser/sentence->words
+          tokeniser/txt->tokens
           first
           ) =not=> "six"))
   )

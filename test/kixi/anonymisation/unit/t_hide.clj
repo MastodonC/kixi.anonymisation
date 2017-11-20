@@ -32,6 +32,8 @@
   (let [hashes (-> (from-chunk "Feeds a feed. Or not.")
                    :content
                    tokeniser/txt->tokens)]
+    (count hashes) => 7
+
     (nth hashes 3) => "."
     (nth hashes 6) => "."
     )

@@ -1,5 +1,6 @@
 (ns kixi.anonymisation.integration.t-anonymisation
   (:require [midje.sweet :refer :all]
+            [kixi.anonymisation.tokeniser :as tokeniser]
             [kixi.anonymisation.recover :as recover]
             [kixi.anonymisation.hide :as hide]))
 

@@ -67,6 +67,10 @@ six
 ;;dir/out.txt.recovered is written to disk with recovered text.
 ```
 
+## Limitations
+
+* Assumes the hash to word lookup will fit in memory.
+
 ## License
 
 Copyright © 2017 MastodonC

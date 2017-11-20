@@ -4,7 +4,7 @@
 
 (defonce txt->sentences (nlp/make-sentence-detector "resources/models/en-sent.bin"))
 
-(def ignore-words ["?" "!" "."])
+(def ignore-words ["?" "!" "." "," ":" ";"])
 (defn ignore? [w] (some #{w} ignore-words))
 
 (defn chunk->sentences [chunk] (txt->sentences chunk))

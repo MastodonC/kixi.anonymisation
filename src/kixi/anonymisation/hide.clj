@@ -29,20 +29,37 @@
        (map (partial anon-word lookup))
        parser/words->sentence))
 
-(defn from-chunk [chunk]
-  (let [lookup (atom {})
-        anon-sentences (->> chunk
-                            parser/chunk->sentences
-                            (map (partial sentence->anon-sentence lookup)))
-        anon-chunk (parser/sentences->chunk anon-sentences)]
-    {:lookup @lookup :content anon-chunk}))
+(defn from-chunk
+  ([chunk] (from-chunk chunk (atom {})))
+  ([chunk lookup]
+   (let [anon-sentences (->> chunk
+                             parser/chunk->sentences
+                             (map (partial sentence->anon-sentence lookup)))
+         anon-chunk (parser/sentences->chunk anon-sentences)]
+     {:lookup @lookup :content anon-chunk})))
+
+(def line-batch-size 5)
+(defn- read-chunk [reader]
+  (let [line-batch (loop [line (line-seq reader)
+                          lines []]
+                     (if (and line (< (count lines) line-batch-size))
+                       (recur (line-seq reader) (concat lines line))
+                       lines))]
+    (when (seq line-batch)
+      (clojure.string/join "\n" line-batch))))
+
+(defn- write-chunk [chunk writer]
+  (println :chunk chunk)
+  (.write writer (clojure.string/join chunk)))
 
 (defn- anonomise-file [in-file out-file lookup-dict]
   (let [lookup (atom lookup-dict)]
     (with-open [reader (clojure.java.io/reader in-file)]
       (with-open [writer (clojure.java.io/writer out-file)]
-        (doseq [line (line-seq reader)]
-          (.write writer (sentence->anon-sentence lookup line)))))
+        (loop [chunk (read-chunk reader)]
+          (when chunk
+            (let [{:keys [lookup content]} (from-chunk chunk lookup)]
+              (write-chunk content writer))))))
     @lookup))
 
 (defn- path [file] (.getParent (clojure.java.io/file file)))

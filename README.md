@@ -70,6 +70,7 @@ six
 ## Limitations
 
 * Assumes the hash to word lookup will fit in memory.
+* Anonimisation of a file is processed in batches of lines. It is assumed these lines will fit in memory.
 
 ## License
 

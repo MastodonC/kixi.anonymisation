@@ -2,7 +2,9 @@
   (:require
    [opennlp.nlp :as nlp]))
 
-(defonce txt->sentences (nlp/make-sentence-detector "resources/models/en-sent.bin"))
+(defonce txt->sentences
+  (nlp/make-sentence-detector
+   (clojure.java.io/resource "en-sent.bin")))
 
 (def ignore-words ["?" "!" "." "," ":" ";"])
 (defn ignore? [w] (some #{w} ignore-words))

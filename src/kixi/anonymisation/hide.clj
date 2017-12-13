@@ -49,7 +49,6 @@
       (clojure.string/join "\n" line-batch))))
 
 (defn- write-chunk [chunk writer]
-  (println :chunk chunk)
   (.write writer (clojure.string/join chunk)))
 
 (defn- anonomise-file [in-file out-file lookup-dict]

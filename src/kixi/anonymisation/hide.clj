@@ -12,7 +12,7 @@
 
 (defn- word->hash [word]
   (-> word
-      (str ts)
+      (str (ts))
       sha3/sha3-256))
 
 (defn- anon-word [lookup word]

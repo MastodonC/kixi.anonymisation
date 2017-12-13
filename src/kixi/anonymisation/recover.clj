@@ -30,7 +30,8 @@
   (let [all-files (->> in-dir
                        clojure.java.io/file
                        file-seq
-                       (remove #(.isDirectory %1)))]
+                       (remove #(.isDirectory %1))
+                       (remove #(= (first (.getName %1)) \.)))]
     (doseq [in-file all-files]
       (let [out-file (clojure.string/replace in-file (re-pattern (str "^" in-dir)) out-dir)]
         (println (.getPath in-file) " -> " out-file)

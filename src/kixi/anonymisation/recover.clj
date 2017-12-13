@@ -18,18 +18,21 @@
          (map (partial line->recovered-line reverse-lookup))
          (parser/sentences->chunk))))
 
-(defn from-file [file lookup-file]
+(defn from-file [in-file out-file lookup-file]
   (let [lookup (-> lookup-file
                    slurp
                    clojure.edn/read-string)
-        chunk (slurp file)
+        chunk (slurp in-file)
         recovered-chunk (from-chunk chunk lookup)]
-    (spit (str file ".recovered") recovered-chunk)))
+    (spit out-file recovered-chunk)))
 
-(defn from-files [in-dir lookup-file]
+(defn from-files [in-dir out-dir lookup-file]
   (let [all-files (->> in-dir
                        clojure.java.io/file
                        file-seq
                        (remove #(.isDirectory %1)))]
-    (doseq [file all-files]
-      (from-file file lookup-file))))
+    (doseq [in-file all-files]
+      (let [out-file (clojure.string/replace in-file (re-pattern (str "^" in-dir)) out-dir)]
+        (println (.getPath in-file) " -> " out-file)
+        (clojure.java.io/make-parents out-file)
+        (from-file in-file out-file lookup-file)))))

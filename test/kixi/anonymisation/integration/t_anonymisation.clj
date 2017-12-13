@@ -10,13 +10,13 @@
 (facts "with strings"
   (fact "it should recover anonymised content from the lookup"
     (let [{lookup :lookup content :content} (hide/from-chunk txt)]
-      (recover/from-chunk lookup content) => stemmed-text))
+      (recover/from-chunk content lookup) => stemmed-text))
 
   (fact "it should leave words not in the lookup as hashed"
     (let [{lookup :lookup content :content} (hide/from-chunk txt)
           incomplete-lookup (dissoc lookup "six" )]
 
-      (-> (recover/from-chunk incomplete-lookup content)
+      (-> (recover/from-chunk content incomplete-lookup)
           tokeniser/txt->tokens
           first
           ) =not=> "six"))
@@ -29,7 +29,7 @@
 
     (hide/from-file "test/fixtures/in.txt" "test/fixtures/out.txt" "test/fixtures/whitelist.txt")
 
-    (let [recovered (recover/from-file "test/fixtures/lookup.edn" "test/fixtures/out.txt")]
+    (let [recovered (recover/from-file "test/fixtures/out.txt" "test/fixtures/lookup.edn")]
       (slurp "test/fixtures/out.txt.recovered") => "six imposs thing befor breakfast."))
 
   (fact "it should hide and recover parital content from whitelisted lookup"
@@ -38,7 +38,7 @@
 
     (hide/from-file "test/fixtures/in.txt" "test/fixtures/out.txt" "test/fixtures/whitelist.txt")
 
-    (let [recovered-whitelisted (recover/from-file "test/fixtures/lookup.edn.whitelisted" "test/fixtures/out.txt")
+    (let [recovered-whitelisted (recover/from-file "test/fixtures/out.txt" "test/fixtures/lookup.edn.whitelisted")
           partial-content (slurp "test/fixtures/out.txt.recovered")]
 
       partial-content => (contains "six")

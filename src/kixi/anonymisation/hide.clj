@@ -58,6 +58,7 @@
   (.write writer (clojure.string/join chunk)))
 
 (defn- anonomise-file [in-file out-file lookup-dict]
+  (clojure.java.io/make-parents out-file)
   (let [lookup (atom lookup-dict)]
     (with-open [reader (clojure.java.io/reader in-file)]
       (with-open [writer (clojure.java.io/writer out-file)]

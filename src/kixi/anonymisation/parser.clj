@@ -6,7 +6,7 @@
   (nlp/make-sentence-detector
    (clojure.java.io/resource "en-sent.bin")))
 
-(def ignore-words ["?" "!" "." "," ":" ";"])
+(def ignore-words ["?" "!" "." "," ":" ";" "\n"])
 (defn ignore? [w] (some #{w} ignore-words))
 
 (defn chunk->sentences [chunk] (txt->sentences chunk))

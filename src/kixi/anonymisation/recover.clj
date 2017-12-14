@@ -3,7 +3,9 @@
             [kixi.anonymisation.tokeniser :as tokeniser]))
 
 (defn word->recovered-word [lookup word]
-  (get lookup word word))
+  (let [w (get lookup word word)]
+    (when (and (= w word) (>= (count w) 32)) (println :failed w))
+    w))
 
 (defn line->recovered-line [lookup line]
   (->> line

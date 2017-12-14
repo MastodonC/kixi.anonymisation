@@ -11,12 +11,18 @@
        (map (partial word->recovered-word lookup))
        parser/words->sentence))
 
-(defn from-chunk  [txt lookup]
+
+(defn from-paragraphs [txt lookup]
   (let [reverse-lookup (clojure.set/map-invert lookup)]
     (->> txt
          parser/chunk->sentences
          (map (partial line->recovered-line reverse-lookup))
          (parser/sentences->chunk))))
+
+(defn from-chunk  [txt lookup]
+  (let [paragraphs (clojure.string/split txt #"\n{2,}")
+        recovered-paragraphs (map #(from-paragraphs %1 lookup) paragraphs)]
+    (clojure.string/join "\n\n" recovered-paragraphs)))
 
 (defn from-file [in-file out-file lookup-file]
   (let [lookup (-> lookup-file

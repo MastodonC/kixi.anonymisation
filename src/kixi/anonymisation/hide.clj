@@ -29,13 +29,19 @@
        (map (partial anon-word lookup))
        parser/words->sentence))
 
+(defn from-paragraphs [chunk lookup]
+ (let [anon-sentences (->> chunk
+                           parser/chunk->sentences
+                           (map (partial sentence->anon-sentence lookup)))
+       anon-chunk (parser/sentences->chunk anon-sentences)]
+   anon-chunk))
+
 (defn from-chunk
   ([chunk] (from-chunk chunk (atom {})))
   ([chunk lookup]
-   (let [anon-sentences (->> chunk
-                             parser/chunk->sentences
-                             (map (partial sentence->anon-sentence lookup)))
-         anon-chunk (parser/sentences->chunk anon-sentences)]
+   (let [paragraphs      (clojure.string/split chunk #"\n{2,}")
+         anon-paragraphs (map #(from-paragraphs %1 lookup) paragraphs)
+         anon-chunk      (clojure.string/join "\n\n" anon-paragraphs)]
      {:lookup @lookup :content anon-chunk})))
 
 (def line-batch-size 5)

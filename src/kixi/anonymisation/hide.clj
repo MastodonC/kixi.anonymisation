@@ -88,6 +88,7 @@
    (let [old-lookup (whitelist/file->map lookup-file)
          new-lookup (->> (file-seq (clojure.java.io/file in-dir))
                          (remove #(.isDirectory %1))
+                         (remove #(= (first (.getName %1)) \.))
                          (reduce (fn [lookup in-file]
                                    (let [out-file (clojure.string/replace in-file (re-pattern (str "^" in-dir)) out-dir)
                                          new-lookup (anonomise-file in-file out-file lookup)]
